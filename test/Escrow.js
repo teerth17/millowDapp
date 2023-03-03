@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const { expect ,assert} = require('chai');
 const { ethers } = require('hardhat');
 
 const tokens = (n) => {
@@ -6,5 +6,13 @@ const tokens = (n) => {
 }
 
 describe('Escrow', () => {
+    // let buyer, seller, inspector, lender
+    // let realEstate, escrow
+    it("saves the address", async () => {
+        const RealEstate = await ethers.getContractFactory("RealEstate");
+        realEstate = await RealEstate.deploy()
 
+        console.log(realEstate.address)
+
+    })
 })
