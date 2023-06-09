@@ -108,7 +108,13 @@ contract Escrow {
         isListed[_nftId] = false;
     }
 
+    receive() external payable {}
+
     function getBalance() public view returns (uint256) {
         return address(this).balance;
+    }
+
+    function getLenderBalance() public view returns (uint256) {
+        return lender.balance;
     }
 }
