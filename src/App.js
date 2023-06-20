@@ -27,15 +27,16 @@ function App() {
     setProvider(provider);
     const network = await provider.getNetwork();
     // console.log(network);
+    // console.log(provider);
 
-    // console.log(config[network.chainId].realEstate.address);
+    // console.log(config[network.chainId]);
     const realEstate = new ethers.Contract(
       config[network.chainId].realEstate.address,
       RealEstate,
       provider
     );
+    // console.log(realEstate.address);
     const totalSupply = await realEstate.totalSupply();
-    console.log(totalSupply);
 
     const homes = [];
     for (let i = 1; i <= totalSupply; i++) {
@@ -43,7 +44,7 @@ function App() {
       const response = await fetch(uri);
       const metadata = await response.json();
       homes.push(metadata);
-      // console.log(metadata);
+      console.log(metadata);
     }
     setHomes(homes);
 
@@ -53,8 +54,8 @@ function App() {
       provider
     );
     setEscrow(escrow);
-
-    window.ethereum.on("accountChanged", async () => {
+    console.log(escrow.address);
+    window.ethereum.on("accountsChanged", async () => {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -67,7 +68,7 @@ function App() {
     loadBlockchainData();
   }, []);
 
-  const tooglePop = (home) => {
+  const togglePop = (home) => {
     setHome(home);
     toggle ? setToggle(false) : setToggle(true);
   };
@@ -82,7 +83,7 @@ function App() {
 
         <div className="cards">
           {homes.map((home, index) => (
-            <div className="card" key={index} onClick={() => tooglePop(home)}>
+            <div className="card" key={index} onClick={() => togglePop(home)}>
               <div className="card__image">
                 <img src={home.image} alt="Home" />
               </div>
@@ -96,7 +97,8 @@ function App() {
                 {/* {index == 0 ? (
                   <div>
                     <p> Bapunagar</p>
-                  </div>
+                  </div>+
+
                 ) : index == 1 ? (
                   <div>
                     <p> Nikol</p>
@@ -118,7 +120,7 @@ function App() {
           provider={provider}
           account={account}
           escrow={escrow}
-          togglePop={toggle}
+          togglePop={togglePop}
         />
       )}
     </div>

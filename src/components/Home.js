@@ -62,8 +62,11 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
     const signer = await provider.getSigner();
 
     let transaction = await escrow
-      .connnet(signer)
-      .depositeEarnest(home.id, { value: escrowAmount });
+      .connect(signer)
+      .depositEarnest(home.id, { value: escrowAmount });
+    await transaction.wait();
+
+    transaction = await escrow.connect(signer).approveSale(home.id);
     await transaction.wait();
 
     setHasBought(true);
@@ -73,7 +76,7 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
     const signer = await provider.getSigner();
 
     let transaction = await escrow
-      .connnet(signer)
+      .connect(signer)
       .updateInspectionStatus(home.id, true);
     await transaction.wait();
 
@@ -83,7 +86,7 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
   const lendHandler = async () => {
     const signer = await provider.getSigner();
 
-    let transaction = await escrow.connnet(signer).approveSale(home.id);
+    let transaction = await escrow.connect(signer).approveSale(home.id);
     await transaction.wait();
 
     const lendAmount =
